@@ -1,0 +1,34 @@
+# .htaccess - URL Routing & Security
+
+# Enable Rewrite Engine
+RewriteEngine On
+
+# Set base directory (ganti 'motor-sales' dengan nama folder kamu)
+RewriteBase /motor-sales/
+
+# Redirect to login if accessing root
+RewriteRule ^$ auth/login.php [L]
+RewriteRule ^index\.php$ auth/login.php [L]
+
+# Security Headers
+<IfModule mod_headers.c>
+    Header set X-XSS-Protection "1; mode=block"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-Content-Type-Options "nosniff"
+</IfModule>
+
+# Protect sensitive files
+<FilesMatch "^(database\.php|\.env)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Disable directory listing
+Options -Indexes
+
+# Set default timezone
+php_value date.timezone "Asia/Jakarta"
+
+# Increase upload size (optional)
+php_value upload_max_filesize 10M
+php_value post_max_size 10M
